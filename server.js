@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const path = require('path')
 const homeRoutes = require('./routes/home')
+const chatRoutes = require('./routes/chat')
+const usersRoutes = require('./routes/users')
+const Message = require('./models/message')
 const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
@@ -16,6 +19,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use('/', homeRoutes)
+app.use('/chat', chatRoutes)
+app.use('/users', usersRoutes)
 
 async function start() {
     try {
@@ -30,6 +35,9 @@ async function start() {
                 io.emit('disc', disc)
             })
             socket.on('chat message', (msg) => {
+                const message = new Message({
+
+                })
                 console.log('message: ' + msg);
                 io.emit('chat message', msg)
             });
@@ -37,7 +45,7 @@ async function start() {
 
         const PORT = 9000;
         server.listen(PORT, () => {
-            console.log(`Server listen on port: ${ PORT }`)
+            console.log(`Server listen on port: ${PORT}`)
         })
 
     } catch (e) {
