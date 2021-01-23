@@ -2,7 +2,7 @@ const { Router } = require('express')
 const router = Router();
 const User = require('../models/user')
 
-router.get('/', (req, res) => {
+router.get('/check', (req, res) => {
     res.render('checkUser', {
         title: 'Аутентификация'
     })
@@ -21,15 +21,19 @@ router.post('/add', async(req, res) => {
         created_at: Date()
     })
     await user.save()
-    res.redirect('/')
+    res.redirect('/', {
+
+    })
 
 })
 
 router.post('/check', async(req, res) => {
     try {
+        const username = req.body.username
         const user = await User.findOne({ username: req.body.username })
+
         if (user) {
-            res.redirect('/chat')
+            res.redirect(`/chat/${username}`)
         } else {
             res.redirect('/')
             throw 'Не найден username'
