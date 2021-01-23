@@ -21,12 +21,23 @@ async function start() {
     try {
         const MONGO_URL = "mongodb+srv://svyatoslav:bayron1421@svg.spi1e.mongodb.net/test_soft?retryWrites=true&w=majority"
         await mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-       io.on('connection',(socket)=>{
-           console.log('a user connected')
-       })
+
+        io.on('connection', (socket) => {
+
+            console.log('User connected')
+            socket.on('disconnect', (disc) => {
+                disc = 'User disconnected'
+                io.emit('disc', disc)
+            })
+            socket.on('chat message', (msg) => {
+                console.log('message: ' + msg);
+                io.emit('chat message', msg)
+            });
+        });
+
         const PORT = 9000;
         server.listen(PORT, () => {
-            console.log(`Server listen on port : ${PORT}`)
+            console.log(`Server listen on port: ${ PORT }`)
         })
 
     } catch (e) {
