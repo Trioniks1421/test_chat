@@ -13,7 +13,7 @@ const chatSchema = new Schema({
             }
         }]
     },
-    created_at:Date
+    created_at: Date
 
 })
 

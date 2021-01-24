@@ -40,6 +40,7 @@ async function start() {
                 })
                 console.log('message: ' + msg);
                 io.emit('chat message', msg)
+                
             });
         });
 
